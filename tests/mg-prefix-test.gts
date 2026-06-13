@@ -7,6 +7,7 @@ interface MagnitudePrefixCase {
   type: 'iec' | 'si';
   n: number;
   precision: number;
+  decimals: number;
   unit: string;
   useName: boolean;
   group: string;
@@ -167,11 +168,64 @@ module('Integration | Helper | mg-prefix', function (hooks) {
     },
   ];
 
+  // See https://github.com/EmberMN/ember-magnitude-helpers/issues/35
+  const decimalsCases: Partial<MagnitudePrefixCase>[] = [
+    {
+      n: 5000,
+      decimals: 0,
+      type: 'si',
+      unit: undefined,
+      useName: false,
+      expected: '5 k',
+    },
+    {
+      n: 50000,
+      decimals: 0,
+      type: 'si',
+      unit: undefined,
+      useName: false,
+      expected: '50 k',
+    },
+    {
+      n: 500000,
+      decimals: 0,
+      type: 'si',
+      unit: undefined,
+      useName: false,
+      expected: '500 k',
+    },
+    {
+      n: 5000,
+      decimals: 1,
+      type: 'si',
+      unit: undefined,
+      useName: false,
+      expected: '5.0 k',
+    },
+    {
+      n: 50000,
+      decimals: 1,
+      type: 'si',
+      unit: undefined,
+      useName: false,
+      expected: '50.0 k',
+    },
+    {
+      n: 500000,
+      decimals: 1,
+      type: 'si',
+      unit: undefined,
+      useName: false,
+      expected: '500.0 k',
+    },
+  ];
+
   const cases = {
     iec: iecCases,
     si: siCases,
     unusual: unusualCases,
     readme: readmeExampleCases,
+    decimals: decimalsCases,
   };
 
   for (const [groupName, casesForGroup] of Object.entries(cases)) {
@@ -181,18 +235,19 @@ module('Integration | Helper | mg-prefix', function (hooks) {
   const caseList = Object.values(cases).flat() as MagnitudePrefixCase[];
 
   caseList.forEach((testCase: MagnitudePrefixCase) => {
-    const { n, precision, type, unit, useName } = testCase;
+    const { n, precision, decimals, type, unit, useName } = testCase;
     const { group, expected } = testCase;
 
     test(`${group}: it shows ${n}${
       unit ? ' ' + unit : ''
-    } (type=${type}, precision=${precision}, useName=${useName}) as ${expected}`, async function (assert) {
+    } (type=${type}, precision=${precision}, decimals=${decimals}, useName=${useName}) as ${expected}`, async function (assert) {
       await render(
         <template>
           <div id="result">
             {{mgPrefix
               n
               precision=precision
+              decimals=decimals
               type=type
               unit=unit
               useName=useName

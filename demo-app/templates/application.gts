@@ -60,6 +60,18 @@ const examples = [
     code: '{{mgPrefix -4096 type="iec" unit="B"}}',
     result: mgPrefix(-4096, { type: 'iec', unit: 'B' }),
   },
+  {
+    code: '{{mgPrefix 5000 decimals=1}}',
+    result: mgPrefix(5000, { decimals: 1 }),
+  },
+  {
+    code: '{{mgPrefix 50000 decimals=1}}',
+    result: mgPrefix(50_000, { decimals: 1 }),
+  },
+  {
+    code: '{{mgPrefix 500000 decimals=1}}',
+    result: mgPrefix(500_000, { decimals: 1 }),
+  },
 ];
 
 const usageSnippet = `import { mgPrefix } from 'ember-magnitude-helpers';

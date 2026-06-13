@@ -52,11 +52,13 @@ export default function mgPrefix(
   value: number = 0,
   {
     precision = 3,
+    decimals,
     type = 'si',
     unit = '',
     useName = false,
   }: {
     precision?: number;
+    decimals?: number;
     type?: 'iec' | 'si';
     unit?: string;
     useName?: boolean;
@@ -85,8 +87,13 @@ export default function mgPrefix(
     .map((ord) => prefixes[type]?.[ord]?.[useName ? 'name' : 'abbr'] ?? '');
   const symbol = symbols[order - minOrder];
 
+  const scaled = order === 0 ? n : n / Math.pow(base, order);
   const result =
-    order === 0 ? n : (n / Math.pow(base, order)).toPrecision(precision);
+    decimals !== undefined
+      ? scaled.toFixed(decimals)
+      : order === 0
+        ? n
+        : scaled.toPrecision(precision);
 
   return htmlSafe(
     `${isNegative ? '-' : ''}${result}${symbol ? ` ${symbol}` : ''}${
