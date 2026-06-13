@@ -12,10 +12,8 @@ This addon provides the following helpers:
 
 ## Compatibility
 
-(according to the default blueprint at least)
-
-* Ember CLI v4.12 or above
-* Node.js v18 or above
+* Ember.js v5.8 or above
+* Embroider or ember-auto-import v2
 
 ## Installation
 
@@ -24,6 +22,7 @@ ember install ember-magnitude-helpers
 ```
 
 ## Usage
+
 
 ### `mg-prefix`
 
@@ -61,8 +60,8 @@ You can also import this helper into JS like this:
 
 ```js
 // some-component.js
-import { tracked } from '@glimmer/tracking';
 import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 import { mgPrefix } from 'ember-magnitude-helpers';
 
 export default class SomeComponent extends Component {
@@ -70,7 +69,7 @@ export default class SomeComponent extends Component {
 
   get humanSize() {
     // returns "1.15 GiB"
-    return mgPrefix([this.bytes], {
+    return mgPrefix(this.bytes, {
       unit: 'B',
       type: 'iec',
     });
